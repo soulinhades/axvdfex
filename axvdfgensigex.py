@@ -1,5 +1,3 @@
-import axvdf
-import axvdfx
 from datetime import datetime
 import sys
 import glob
@@ -49,7 +47,7 @@ with GracefulInterruptHandler() as h:
         if x[1] in mdic:
             print(index, len(paths), "      ", end='\r')
         else:
-            img = axvdfex.get_video_signature(path)
+            img = axvdfex.get_video_signature2(path)
             mdic[x[1]] = img
             print(index, len(paths), "      ", end='\r')
         if h.interrupted:

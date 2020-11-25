@@ -4,6 +4,7 @@ import numpy as np
 import cv2
 from sklearn.metrics import mean_squared_error
 from skimage.metrics import structural_similarity as ssim
+import av
 
 maxframes = 5
 
@@ -34,6 +35,21 @@ def getvideothumbnail(name):
     #print(list(output))
     return (np.array(list(output),dtype='uint8'), status)
 
+def get_video_signature2(name):
+    container = av.open(name)
+    stream = container.streams.video[0]
+    #print(float(stream.duration*stream.time_base))
+    #print(stream.codec_context.width, stream.codec_context.height)
+    imgref = np.zeros((stream.codec_context.height, stream.codec_context.width),dtype='uint8')
+    imgref[:] = 255
+    stream.codec_context.skip_frame = 'NONKEY'
+    for frame in container.decode(stream):
+        p = frame.to_ndarray(format="gray")
+        #p = autocrop(p)
+        mse = ssim(p, imgref)
+        #print(mse)
+
+    
 imgref = np.zeros((128,128),dtype='uint8')
 imgref[:] = 255
 
@@ -64,9 +80,10 @@ def get_video_signature(name):
     return mse
     
 if __name__ == "__main__":
-    msea = get_video_signature(sys.argv[1])
-    mseb = get_video_signature(sys.argv[2])
-    print(msea,mseb,msea-mseb)
+    get_video_signature2(sys.argv[1])
+    #msea = get_video_signature(sys.argv[1])
+    #mseb = get_video_signature(sys.argv[2])
+    #print(msea,mseb,msea-mseb)
     #imga, status = getvideothumbnail(sys.argv[1])
     #imga = imga.reshape(4,128,128)
     #imgb = autocrop(imga[0])
