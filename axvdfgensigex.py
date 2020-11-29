@@ -47,7 +47,7 @@ with GracefulInterruptHandler() as h:
         if x[1] in mdic:
             print(index, len(paths), "      ", end='\r')
         else:
-            img = axvdfex.get_video_signature2(path)
+            img = axvdfex.get_video_signature3(path)
             mdic[x[1]] = img
             print(index, len(paths), "      ", end='\r')
         if h.interrupted:
