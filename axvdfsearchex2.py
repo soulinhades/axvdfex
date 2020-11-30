@@ -19,10 +19,11 @@ for i in range(0,len(keys)):
     for j in range(i+1,len(keys)):
         print(i,j,"    ", end='\r')
         sigy = mdic[keys[j]]
-        #print(sigy[0])
-        if axvdfex.search_video3(sigx,sigy,10) > 0:
-            print(keys[i], keys[j])
+        match, sub = axvdfex.search_video3x(sigx,sigy,int(sys.argv[3]))
+        if match > 1:
+            print(keys[i], keys[j], sub)
             print("-----------------------------------------------------------------------------------")
+            if sub: input("Press Enter to continue...")
 end = datetime.now()
 print(count, end - start)
 
