@@ -238,11 +238,45 @@ def search_video3x(siga,sigb,m=10):
         if found == False:
             break
     return match, sub
+ 
+def search_video3xx(siga,sigb,m=20):
+    print("--------------------------------------------------------------------------------")
+    if len(siga) > len(sigb):
+        sigax = sigb
+        sigbx = siga
+    else:
+        sigax = siga
+        sigbx = sigb
+    match = 0
+    start = 0
+    seq = 0
+    for i in range(0,len(sigax)):
+        x = sigax[i]
+        found = False
+        for j in range(start,len(sigbx)):
+            y = sigbx[j]
+            d = x[1] - y[1]
+            if d < m:
+                start = j + 1
+                found = True
+                if match == 0:
+                    oj = j
+                else:
+                    if j == oj + 1:
+                        seq += 1
+                    oj += 1
+                match += 1
+                print("Match found (", x[0], ",", y[0], ") ", d)
+                break
+        if found == False:
+            break
+    return match, seq
      
 if __name__ == "__main__":
     a = get_video_signature3(sys.argv[1])
     b = get_video_signature3(sys.argv[2])
-    search_video3(a,b,int(sys.argv[3]))
+    match, seq = search_video3xx(a,b,int(sys.argv[3]))
+    print(match,seq)
     #msea = get_video_signature(sys.argv[1])
     #mseb = get_video_signature(sys.argv[2])
     #print(msea,mseb,msea-mseb)
