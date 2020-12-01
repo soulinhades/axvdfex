@@ -92,11 +92,9 @@ class ImageHash(object):
         return not np.array_equal(self.hash.flatten(), other.hash.flatten())
 
     def __hash__(self):
-        # this returns a 8 bit integer, intentionally shortening the information
         return sum([2**(i % 8) for i, v in enumerate(self.hash.flatten()) if v])
     
     def __len__(self):
-        # Returns the bit length of the hash
         return self.hash.size
 
 def phash(image):
