@@ -240,7 +240,7 @@ def search_video3x(siga,sigb,m=10):
     return match, sub
  
 def search_video3xx(siga,sigb,m=20):
-    print("--------------------------------------------------------------------------------")
+    #print("--------------------------------------------------------------------------------")
     if len(siga) > len(sigb):
         sigax = sigb
         sigbx = siga
@@ -250,6 +250,7 @@ def search_video3xx(siga,sigb,m=20):
     match = 0
     start = 0
     seq = 0
+    sj = 0
     for i in range(0,len(sigax)):
         x = sigax[i]
         found = False
@@ -261,16 +262,18 @@ def search_video3xx(siga,sigb,m=20):
                 found = True
                 if match == 0:
                     oj = j
+                    sj = j
+                    seq += 1
                 else:
                     if j == oj + 1:
                         seq += 1
                     oj += 1
                 match += 1
-                print("Match found (", x[0], ",", y[0], ") ", d)
+                #print("Match found (", x[0], ",", y[0], ") ", d)
                 break
         if found == False:
             break
-    return match, seq
+    return match, seq, sj
      
 if __name__ == "__main__":
     a = get_video_signature3(sys.argv[1])
