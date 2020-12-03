@@ -45,4 +45,4 @@ for x in pgroups:
     for y in pgroups[x]:
         print('\t',y)
 
-print("GROUP COUNT:", len(pgroups), xcount)
+print("GROUP COUNT:", len(pgroups), "CONFLICTS:", xcount)

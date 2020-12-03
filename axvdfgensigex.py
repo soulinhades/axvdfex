@@ -39,6 +39,8 @@ except FileNotFoundError:
     mdic = {}
   
 paths = glob.glob(sys.argv[2] + "/*.mp4")
+paths = paths + glob.glob(sys.argv[2] + "/*.m4v")
+
 with GracefulInterruptHandler() as h:
     timefirst = datetime.now()
     for index, path in enumerate(paths):

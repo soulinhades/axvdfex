@@ -116,6 +116,10 @@ def get_video_signature3(name):
         p = frame.to_ndarray(format="gray")
         p = autocrop(p)
         framex = frame.from_ndarray(p, format='gray')
+        #framex.to_image().save(
+        #    'xnight-sky.{:04d}.jpg'.format(frame.index),
+        #    quality=80,
+        #)
         framex = framex.reformat(width=32,height=32,format="gray")
         #print(frame)    
         image = framex.to_ndarray(format="gray")
@@ -239,8 +243,7 @@ def search_video3x(siga,sigb,m=10):
             break
     return match, sub
  
-def search_video3xx(siga,sigb,m=20):
-    #print("--------------------------------------------------------------------------------")
+def search_video3xxold(siga,sigb,m=20):
     if len(siga) > len(sigb):
         sigax = sigb
         sigbx = siga
@@ -274,15 +277,51 @@ def search_video3xx(siga,sigb,m=20):
         if found == False:
             break
     return match, seq, sj
-     
+    
+def search_video3xx(siga,sigb,m=20):
+    if len(siga) > len(sigb): siga,sigb = sigb,siga
+    #print(len(siga),len(sigb))
+    match = 0
+    start = 0
+    seq = 0
+    sj = None
+    oj = -2
+    for i in range(0,len(siga)):
+        x = siga[i]
+        found = False
+        for j in range(start,len(sigb)):
+            y = sigb[j]
+            d = x[1] - y[1]
+            #print(i,j,d)
+            if d < m:
+                #print("Match found (", x[0], ",", y[0], ") ", d)
+                match += 1
+                start = j + 1
+                found = True
+                if j == oj + 1:
+                    seq += 1
+                    oj += 1
+                else:
+                    #if sj != None:
+                    #    print("==>",sj,seq)
+                    seq = 1
+                    oj = j
+                    sj = j
+                break
+        if found == False:
+            break
+    #print("==>",sj,seq)
+    return match, seq, sj
+ 
+
 if __name__ == "__main__":
     a = get_video_signature3(sys.argv[1])
     b = get_video_signature3(sys.argv[2])
-    match, seq = search_video3xx(a,b,int(sys.argv[3]))
-    print(match,seq)
+    match, seq, start= search_video3xx(a,b,int(sys.argv[3]))
+    print(match,seq,start)
     #msea = get_video_signature(sys.argv[1])
     #mseb = get_video_signature(sys.argv[2])
-    #print(msea,mseb,msea-mseb)
+    print(a[0][1])
     #imga, status = getvideothumbnail(sys.argv[1])
     #imga = imga.reshape(4,128,128)
     #imgb = autocrop(imga[0])
